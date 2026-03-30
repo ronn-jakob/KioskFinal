@@ -220,10 +220,8 @@ public class Customize extends javax.swing.JFrame {
 
         if (editIndex >= 0) {
             cart.updateItem(editIndex, item);
-            JOptionPane.showMessageDialog(this, "Item updated successfully.");
         } else {
             cart.addItem(item);
-            JOptionPane.showMessageDialog(this, "Item added to order.");
         }
 
         dispose();
