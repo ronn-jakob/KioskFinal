@@ -938,7 +938,7 @@ public class AdminMain extends javax.swing.JFrame {
             return;
         }
 
-        String sql = "SELECT id, total, discountRate, finalTotal, orderStatus FROM orders WHERE orderNumber = ?";
+        String sql = "SELECT orderId, total, discountRate, finalTotal, orderStatus FROM orders WHERE orderNumber = ?";
         try (PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, orderNum);
             try (ResultSet rs = ps.executeQuery()) {
@@ -946,7 +946,7 @@ public class AdminMain extends javax.swing.JFrame {
                     javax.swing.JOptionPane.showMessageDialog(this, "Order #" + orderNum + " not found.");
                     return;
                 }
-                currentOrderId   = rs.getInt("id");
+                currentOrderId   = rs.getInt("orderId");
                 currentTotal     = rs.getDouble("total");
                 String status    = rs.getString("orderStatus");
                 currentOrderPaid = "paid".equalsIgnoreCase(status);
@@ -968,17 +968,17 @@ public class AdminMain extends javax.swing.JFrame {
 
     private void loadOrderItems() {
         String sql =
-            "SELECT oi.id, mi.itemName, d.drinkName, " +
+            "SELECT oi.orderItemId, mi.itemName, d.drinkName, " +
             "GROUP_CONCAT(a.addonName ORDER BY a.addonId SEPARATOR ', ') AS addons, " +
             "oi.quantity, oi.itemTotal " +
             "FROM order_items oi " +
             "JOIN menu_items mi ON mi.itemID = oi.menuItemId " +
-            "LEFT JOIN order_item_drinks oid ON oid.orderItemId = oi.id " +
+            "LEFT JOIN order_item_drinks oid ON oid.orderItemId = oi.orderItemId " +
             "LEFT JOIN drinks d ON d.drinkID = oid.drinkId " +
-            "LEFT JOIN order_item_addons oia ON oia.orderItemId = oi.id " +
+            "LEFT JOIN order_item_addons oia ON oia.orderItemId = oi.orderItemId " +
             "LEFT JOIN add_ons a ON a.addonId = oia.addonId " +
             "WHERE oi.orderId = ? " +
-            "GROUP BY oi.id, mi.itemName, d.drinkName, oi.quantity, oi.itemTotal";
+            "GROUP BY oi.orderItemId, mi.itemName, d.drinkName, oi.quantity, oi.itemTotal";
 
         DefaultTableModel model = (DefaultTableModel) orderTable.getModel();
         model.setRowCount(0);
@@ -988,7 +988,7 @@ public class AdminMain extends javax.swing.JFrame {
             ps.setInt(1, currentOrderId);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    orderItemIds.add(rs.getInt("id"));
+                    orderItemIds.add(rs.getInt("orderItemId"));
                     String drinks = rs.getString("drinkName");
                     String addons = rs.getString("addons");
                     model.addRow(new Object[]{
@@ -1050,7 +1050,7 @@ public class AdminMain extends javax.swing.JFrame {
         try {
             conn.setAutoCommit(false);
 
-            String updateOrder = "UPDATE orders SET discountRate=?, discountAmount=?, finalTotal=?, orderStatus='paid' WHERE id=?";
+            String updateOrder = "UPDATE orders SET discountRate=?, discountAmount=?, finalTotal=?, orderStatus='paid' WHERE orderId=?";
             try (PreparedStatement ps = conn.prepareStatement(updateOrder)) {
                 ps.setDouble(1, discountRate);
                 ps.setDouble(2, discountAmount);
@@ -1195,7 +1195,7 @@ public class AdminMain extends javax.swing.JFrame {
             conn.setAutoCommit(false);
 
             try (PreparedStatement ps = conn.prepareStatement(
-                    "UPDATE order_items SET quantity=?, itemTotal=? WHERE id=?")) {
+                    "UPDATE order_items SET quantity=?, itemTotal=? WHERE orderItemId=?")) {
                 ps.setInt(1, newQty);
                 ps.setDouble(2, newItemTotal);
                 ps.setInt(3, orderItemId);
@@ -1247,7 +1247,7 @@ public class AdminMain extends javax.swing.JFrame {
                 ps.executeUpdate();
             }
             try (PreparedStatement ps = conn.prepareStatement(
-                    "DELETE FROM order_items WHERE id=?")) {
+                    "DELETE FROM order_items WHERE orderItemId=?")) {
                 ps.setInt(1, orderItemId);
                 ps.executeUpdate();
             }
@@ -1283,7 +1283,7 @@ public class AdminMain extends javax.swing.JFrame {
             }
         }
         try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE orders SET total=? WHERE id=?")) {
+                "UPDATE orders SET total=? WHERE orderId=?")) {
             ps.setDouble(1, newTotal);
             ps.setInt(2, currentOrderId);
             ps.executeUpdate();
