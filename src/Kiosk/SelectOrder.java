@@ -25,6 +25,7 @@ public class SelectOrder extends javax.swing.JFrame {
     private Connection conn;
     private MenuSQL menuQuery;
     private Cart cart;
+    private Customize currentCustomize;
 
     public SelectOrder(String orderType, Cart cart) {
         this.orderType = orderType;
@@ -88,16 +89,17 @@ public class SelectOrder extends javax.swing.JFrame {
     }
 
     private void openCustomizeFrame(MenuItemData item, int editIndex) {
-        Customize customize = new Customize(conn, item, cart, editIndex);
-        customize.addWindowListener(new WindowAdapter() {
+        currentCustomize = new Customize(conn, item, cart, editIndex);
+        currentCustomize.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosed(WindowEvent e) {
+                currentCustomize = null;
                 refreshOrderTotal();
                 SelectOrder.this.toFront();
                 SelectOrder.this.requestFocus();
             }
         });
-        customize.setVisible(true);
+        currentCustomize.setVisible(true);
     }
 
     private void refreshOrderTotal() {
@@ -548,6 +550,13 @@ public class SelectOrder extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void closeCurrentCustomize() {
+        if (currentCustomize != null && currentCustomize.isVisible()) {
+            currentCustomize.dispose();
+        }
+        currentCustomize = null;
+    }
+
     private void btnaddonsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnaddonsActionPerformed
         loadAddons();
     }//GEN-LAST:event_btnaddonsActionPerformed
@@ -584,12 +593,14 @@ public class SelectOrder extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        closeCurrentCustomize();
         new Welcome().setVisible(true);
         dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnViewOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewOrderActionPerformed
         // TODO add your handling code here:
+        closeCurrentCustomize();
         Summary summary = new Summary(cart, conn);
         summary.setVisible(true);
         dispose();

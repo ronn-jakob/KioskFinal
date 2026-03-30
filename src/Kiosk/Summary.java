@@ -10,6 +10,7 @@ public class Summary extends javax.swing.JFrame {
 
     private Cart cart;
     private java.sql.Connection conn;
+    private Customize currentCustomize;
 
     public Summary() {
         initComponents();
@@ -126,14 +127,18 @@ public class Summary extends javax.swing.JFrame {
         btnEditItem.addActionListener(new java.awt.event.ActionListener() {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
-                Customize customize = new Customize(conn, item.getMenuItem(), cart, index);
-                customize.addWindowListener(new java.awt.event.WindowAdapter() {
+                if (currentCustomize != null && currentCustomize.isVisible()) {
+                    currentCustomize.dispose();
+                }
+                currentCustomize = new Customize(conn, item.getMenuItem(), cart, index);
+                currentCustomize.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosed(java.awt.event.WindowEvent we) {
+                        currentCustomize = null;
                         refreshSummary();
                     }
                 });
-                customize.setVisible(true);
+                currentCustomize.setVisible(true);
             }
         });
 
@@ -350,8 +355,16 @@ public class Summary extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void closeCurrentCustomize() {
+        if (currentCustomize != null && currentCustomize.isVisible()) {
+            currentCustomize.dispose();
+        }
+        currentCustomize = null;
+    }
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        closeCurrentCustomize();
         SelectOrder order = new SelectOrder(cart.getOrderType(), cart);
         order.setVisible(true);
         dispose();
@@ -364,6 +377,7 @@ public class Summary extends javax.swing.JFrame {
             return;
         }
 
+        closeCurrentCustomize();
         Payment payment = new Payment(cart, conn);
         payment.setVisible(true);
         dispose();
