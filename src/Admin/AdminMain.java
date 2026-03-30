@@ -1050,7 +1050,7 @@ public class AdminMain extends javax.swing.JFrame {
         try {
             conn.setAutoCommit(false);
 
-            String updateOrder = "UPDATE orders SET discountRate=?, discountAmount=?, finalTotal=?, orderStatus='paid' WHERE orderId=?";
+            String updateOrder = "UPDATE orders SET discountRate=?, discountAmount=?, finalTotal=?, orderStatus='Paid' WHERE orderId=?";
             try (PreparedStatement ps = conn.prepareStatement(updateOrder)) {
                 ps.setDouble(1, discountRate);
                 ps.setDouble(2, discountAmount);

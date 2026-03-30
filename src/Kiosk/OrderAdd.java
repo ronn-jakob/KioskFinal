@@ -15,7 +15,7 @@ public class OrderAdd {
             double total = cart.getTotal();
 
             String orderSql = "INSERT INTO orders(orderNumber, total, discountRate, discountAmount, finalTotal, orderStatus) "
-                    + "VALUES (?, ?, 0, 0, ?, 'pending')";
+                    + "VALUES (?, ?, 0, 0, ?, 'Pending')";
 
             int orderId;
 
