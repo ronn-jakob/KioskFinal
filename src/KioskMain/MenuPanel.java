@@ -93,24 +93,23 @@ public class MenuPanel extends JPanel {
             setCardBackground(mouseExit, lblImage, lblName, lblPrice, bottomPanel);
         }
     };
+        addMouseListener(hoverEffect);
+        lblImage.addMouseListener(hoverEffect);
+        lblName.addMouseListener(hoverEffect);
+        lblPrice.addMouseListener(hoverEffect);
+        bottomPanel.addMouseListener(hoverEffect);
 
-    addMouseListener(hoverEffect);
-    lblImage.addMouseListener(hoverEffect);
-    lblName.addMouseListener(hoverEffect);
-    lblPrice.addMouseListener(hoverEffect);
-    bottomPanel.addMouseListener(hoverEffect);
-
-    add(lblImage, BorderLayout.CENTER);
-    add(bottomPanel, BorderLayout.SOUTH);
-}
+        add(lblImage, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
+    }
    
    private void setCardBackground(Color color, Component... components) {
-    setBackground(color);
-    for (Component comp : components) {
-        comp.setBackground(color);
+        setBackground(color);
+        for (Component comp : components) {
+            comp.setBackground(color);
+        }
+        repaint();
     }
-    repaint();
-}
 
     private String escapeHtml(String text) {
         if (text == null) {

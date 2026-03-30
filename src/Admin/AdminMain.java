@@ -58,6 +58,7 @@ public class AdminMain extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
         sidePanel = new javax.swing.JPanel();
@@ -71,8 +72,37 @@ public class AdminMain extends javax.swing.JFrame {
         logoutButton = new javax.swing.JButton();
         mainCardPanel = new javax.swing.JPanel();
         payOrderPanel = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        orderNumTextField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        orderNumButton = new javax.swing.JButton();
+        calculateButton = new javax.swing.JButton();
+        paymentTextField = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        orderTable = new javax.swing.JTable();
+        addOrderButton = new javax.swing.JButton();
+        editOrderButton = new javax.swing.JButton();
+        deleteButtonOrder = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        discountComboBox = new javax.swing.JComboBox<>();
+        jLabel5 = new javax.swing.JLabel();
+        totalPriceLabel = new javax.swing.JLabel();
         createOrderPanel = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        createWNButton = new javax.swing.JButton();
+        createCButton = new javax.swing.JButton();
+        createPButton = new javax.swing.JButton();
+        creatBButton = new javax.swing.JButton();
+        createDesButton = new javax.swing.JButton();
+        createDrinkButton = new javax.swing.JButton();
+        creatAOButton = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        decreaseQuanButton = new javax.swing.JButton();
+        increaseQuanButton = new javax.swing.JButton();
+        removeButton = new javax.swing.JButton();
+        clearButton = new javax.swing.JButton();
+        confirmOrder = new javax.swing.JButton();
         editMenuPanel = new javax.swing.JPanel();
         orderLogsPanel = new javax.swing.JPanel();
 
@@ -252,7 +282,7 @@ public class AdminMain extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
                 .addComponent(logoutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(100, 100, 100))
         );
@@ -260,38 +290,388 @@ public class AdminMain extends javax.swing.JFrame {
         mainCardPanel.setBackground(new java.awt.Color(255, 255, 255));
         mainCardPanel.setLayout(new java.awt.CardLayout());
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 4));
+        payOrderPanel.setBackground(new java.awt.Color(235, 235, 235));
+
+        orderNumTextField.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        orderNumTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 4));
+
+        jLabel1.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jLabel1.setText("Enter Order Number:");
+
+        orderNumButton.setBackground(new java.awt.Color(243, 93, 93));
+        orderNumButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        orderNumButton.setForeground(new java.awt.Color(255, 255, 255));
+        orderNumButton.setText("Enter");
+        orderNumButton.setBorder(null);
+        orderNumButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        orderNumButton.setFocusPainted(false);
+
+        calculateButton.setBackground(new java.awt.Color(122, 255, 89));
+        calculateButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        calculateButton.setForeground(new java.awt.Color(51, 51, 51));
+        calculateButton.setText("Calculate");
+        calculateButton.setAutoscrolls(true);
+        calculateButton.setBorder(null);
+        calculateButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        calculateButton.setFocusable(false);
+        calculateButton.addActionListener(this::calculateButtonActionPerformed);
+
+        paymentTextField.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        paymentTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 4));
+
+        jLabel3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jLabel3.setText("Enter Payment Amount:");
+
+        orderTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
+            },
+            new String [] {
+                "Item", "Drinks", "Add-ons", "Quantity", "Price"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        orderTable.setShowGrid(false);
+        jScrollPane2.setViewportView(orderTable);
+        if (orderTable.getColumnModel().getColumnCount() > 0) {
+            orderTable.getColumnModel().getColumn(0).setResizable(false);
+            orderTable.getColumnModel().getColumn(1).setResizable(false);
+            orderTable.getColumnModel().getColumn(2).setResizable(false);
+            orderTable.getColumnModel().getColumn(3).setResizable(false);
+            orderTable.getColumnModel().getColumn(4).setResizable(false);
+        }
+
+        addOrderButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        addOrderButton.setForeground(new java.awt.Color(243, 93, 93));
+        addOrderButton.setText("Add");
+        addOrderButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
+        addOrderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addOrderButton.setRequestFocusEnabled(false);
+
+        editOrderButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        editOrderButton.setForeground(new java.awt.Color(243, 93, 93));
+        editOrderButton.setText("Edit");
+        editOrderButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 0), 3));
+        editOrderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        deleteButtonOrder.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        deleteButtonOrder.setForeground(new java.awt.Color(243, 93, 93));
+        deleteButtonOrder.setText("Delete");
+        deleteButtonOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 102), 3));
+        deleteButtonOrder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel4.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(243, 93, 93));
+        jLabel4.setText("Total Price: ");
+
+        discountComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Discount", "PWD" }));
+
+        jLabel5.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(243, 93, 93));
+        jLabel5.setText("Select Discount:");
+
+        totalPriceLabel.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
+        totalPriceLabel.setForeground(new java.awt.Color(243, 93, 93));
+        totalPriceLabel.setText(" ");
 
         javax.swing.GroupLayout payOrderPanelLayout = new javax.swing.GroupLayout(payOrderPanel);
         payOrderPanel.setLayout(payOrderPanelLayout);
         payOrderPanelLayout.setHorizontalGroup(
             payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(payOrderPanelLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(655, Short.MAX_VALUE))
+                .addGap(36, 36, 36)
+                .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(payOrderPanelLayout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(totalPriceLabel))
+                    .addGroup(payOrderPanelLayout.createSequentialGroup()
+                        .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(payOrderPanelLayout.createSequentialGroup()
+                                .addComponent(orderNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(orderNumButton, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel1))
+                        .addGap(23, 23, 23)
+                        .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(payOrderPanelLayout.createSequentialGroup()
+                                .addComponent(paymentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 288, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel3)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, payOrderPanelLayout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 722, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addOrderButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editOrderButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel5)
+                                .addComponent(deleteButtonOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(discountComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(0, 126, Short.MAX_VALUE))
         );
         payOrderPanelLayout.setVerticalGroup(
             payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(payOrderPanelLayout.createSequentialGroup()
-                .addGap(148, 148, 148)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(563, Short.MAX_VALUE))
+                .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(payOrderPanelLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel1)
+                        .addGap(6, 6, 6)
+                        .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(orderNumTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(orderNumButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(payOrderPanelLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel3)
+                        .addGap(7, 7, 7)
+                        .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(paymentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(calculateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(payOrderPanelLayout.createSequentialGroup()
+                        .addComponent(addOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(14, 14, 14)
+                        .addComponent(editOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(deleteButtonOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(discountComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 393, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(totalPriceLabel))
+                .addContainerGap(150, Short.MAX_VALUE))
         );
 
         mainCardPanel.add(payOrderPanel, "payOrderCard");
 
-        createOrderPanel.setBackground(new java.awt.Color(102, 255, 204));
+        createOrderPanel.setBackground(new java.awt.Color(235, 235, 235));
+
+        jPanel5.setBackground(new java.awt.Color(235, 235, 235));
+        jPanel5.setLayout(new java.awt.GridBagLayout());
+
+        createWNButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        createWNButton.setForeground(new java.awt.Color(243, 93, 93));
+        createWNButton.setText("What's New");
+        createWNButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        createWNButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 20;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.insets = new java.awt.Insets(9, 14, 0, 6);
+        jPanel5.add(createWNButton, gridBagConstraints);
+
+        createCButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        createCButton.setForeground(new java.awt.Color(243, 93, 93));
+        createCButton.setText("Chicken");
+        createCButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        createCButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        createCButton.addActionListener(this::createCButtonActionPerformed);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 40;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.insets = new java.awt.Insets(9, 1, 0, 12);
+        jPanel5.add(createCButton, gridBagConstraints);
+
+        createPButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        createPButton.setForeground(new java.awt.Color(243, 93, 93));
+        createPButton.setText("Pasta");
+        createPButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        createPButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 47;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.insets = new java.awt.Insets(9, 1, 0, 12);
+        jPanel5.add(createPButton, gridBagConstraints);
+
+        creatBButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        creatBButton.setForeground(new java.awt.Color(243, 93, 93));
+        creatBButton.setText("Burgers");
+        creatBButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        creatBButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 40;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.insets = new java.awt.Insets(9, 1, 0, 12);
+        jPanel5.add(creatBButton, gridBagConstraints);
+
+        createDesButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        createDesButton.setForeground(new java.awt.Color(243, 93, 93));
+        createDesButton.setText("Dessert");
+        createDesButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        createDesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.ipadx = 40;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.insets = new java.awt.Insets(9, 1, 0, 12);
+        jPanel5.add(createDesButton, gridBagConstraints);
+
+        createDrinkButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        createDrinkButton.setForeground(new java.awt.Color(243, 93, 93));
+        createDrinkButton.setText("Drinks");
+        createDrinkButton.setActionCommand("Drinks");
+        createDrinkButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        createDrinkButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 60;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.insets = new java.awt.Insets(9, 6, 9, 0);
+        jPanel5.add(createDrinkButton, gridBagConstraints);
+
+        creatAOButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        creatAOButton.setForeground(new java.awt.Color(243, 93, 93));
+        creatAOButton.setText("Add-ons");
+        creatAOButton.setToolTipText("");
+        creatAOButton.setActionCommand("Add-ons");
+        creatAOButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        creatAOButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 40;
+        gridBagConstraints.ipady = 20;
+        gridBagConstraints.insets = new java.awt.Insets(9, 0, 9, 12);
+        jPanel5.add(creatAOButton, gridBagConstraints);
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Item", "Quantity", "Price"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jTable2);
+        if (jTable2.getColumnModel().getColumnCount() > 0) {
+            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(1).setResizable(false);
+            jTable2.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        decreaseQuanButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        decreaseQuanButton.setForeground(new java.awt.Color(243, 93, 93));
+        decreaseQuanButton.setText("Decrease");
+        decreaseQuanButton.setToolTipText("");
+        decreaseQuanButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        decreaseQuanButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        increaseQuanButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        increaseQuanButton.setForeground(new java.awt.Color(243, 93, 93));
+        increaseQuanButton.setText("Increase");
+        increaseQuanButton.setToolTipText("");
+        increaseQuanButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        increaseQuanButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        increaseQuanButton.addActionListener(this::increaseQuanButtonActionPerformed);
+
+        removeButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        removeButton.setForeground(new java.awt.Color(243, 93, 93));
+        removeButton.setText("Remove");
+        removeButton.setToolTipText("");
+        removeButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        removeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        removeButton.addActionListener(this::removeButtonActionPerformed);
+
+        clearButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        clearButton.setForeground(new java.awt.Color(243, 93, 93));
+        clearButton.setText("Cancel/Clear");
+        clearButton.setToolTipText("");
+        clearButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        clearButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        confirmOrder.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        confirmOrder.setForeground(new java.awt.Color(243, 93, 93));
+        confirmOrder.setText("Confirm Order");
+        confirmOrder.setToolTipText("");
+        confirmOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
+        confirmOrder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         javax.swing.GroupLayout createOrderPanelLayout = new javax.swing.GroupLayout(createOrderPanel);
         createOrderPanel.setLayout(createOrderPanelLayout);
         createOrderPanelLayout.setHorizontalGroup(
             createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGroup(createOrderPanelLayout.createSequentialGroup()
+                .addGap(3, 3, 3)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(createOrderPanelLayout.createSequentialGroup()
+                            .addComponent(decreaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(increaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(createOrderPanelLayout.createSequentialGroup()
+                            .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(confirmOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(123, Short.MAX_VALUE))
         );
         createOrderPanelLayout.setVerticalGroup(
             createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 764, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createOrderPanelLayout.createSequentialGroup()
+                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(createOrderPanelLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(createOrderPanelLayout.createSequentialGroup()
+                        .addGap(36, 36, 36)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                        .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(decreaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(increaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(confirmOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72))
         );
 
         mainCardPanel.add(createOrderPanel, "createOrderCard");
@@ -302,11 +682,11 @@ public class AdminMain extends javax.swing.JFrame {
         editMenuPanel.setLayout(editMenuPanelLayout);
         editMenuPanelLayout.setHorizontalGroup(
             editMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGap(0, 1064, Short.MAX_VALUE)
         );
         editMenuPanelLayout.setVerticalGroup(
             editMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 764, Short.MAX_VALUE)
+            .addGap(0, 712, Short.MAX_VALUE)
         );
 
         mainCardPanel.add(editMenuPanel, "editMenuCard");
@@ -317,11 +697,11 @@ public class AdminMain extends javax.swing.JFrame {
         orderLogsPanel.setLayout(orderLogsPanelLayout);
         orderLogsPanelLayout.setHorizontalGroup(
             orderLogsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGap(0, 1064, Short.MAX_VALUE)
         );
         orderLogsPanelLayout.setVerticalGroup(
             orderLogsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 764, Short.MAX_VALUE)
+            .addGap(0, 712, Short.MAX_VALUE)
         );
 
         mainCardPanel.add(orderLogsPanel, "orderLogsCard");
@@ -338,7 +718,9 @@ public class AdminMain extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(sidePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(mainCardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(mainCardPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 712, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, -1));
@@ -450,6 +832,22 @@ public class AdminMain extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_logoutButtonActionPerformed
 
+    private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_calculateButtonActionPerformed
+
+    private void createCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_createCButtonActionPerformed
+
+    private void increaseQuanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseQuanButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_increaseQuanButtonActionPerformed
+
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -472,26 +870,55 @@ public class AdminMain extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        String userRole = "cashier";
+        String userRole = "admin";
         java.awt.EventQueue.invokeLater(() -> new AdminMain(userRole).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addOrderButton;
+    private javax.swing.JButton calculateButton;
+    private javax.swing.JButton clearButton;
+    private javax.swing.JButton confirmOrder;
+    private javax.swing.JButton creatAOButton;
+    private javax.swing.JButton creatBButton;
+    private javax.swing.JButton createCButton;
+    private javax.swing.JButton createDesButton;
+    private javax.swing.JButton createDrinkButton;
     private javax.swing.JButton createOrderButton;
     private javax.swing.JPanel createOrderPanel;
+    private javax.swing.JButton createPButton;
+    private javax.swing.JButton createWNButton;
+    private javax.swing.JButton decreaseQuanButton;
+    private javax.swing.JButton deleteButtonOrder;
+    private javax.swing.JComboBox<String> discountComboBox;
     private javax.swing.JButton editMenuButton;
     private javax.swing.JPanel editMenuPanel;
+    private javax.swing.JButton editOrderButton;
+    private javax.swing.JButton increaseQuanButton;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable2;
     private javax.swing.JLabel logoHolder;
     private javax.swing.JButton logoutButton;
     private javax.swing.JPanel mainCardPanel;
     private javax.swing.JButton orderLogsButton;
     private javax.swing.JPanel orderLogsPanel;
+    private javax.swing.JButton orderNumButton;
+    private javax.swing.JTextField orderNumTextField;
+    private javax.swing.JTable orderTable;
     private javax.swing.JButton payOrderButton;
     private javax.swing.JPanel payOrderPanel;
+    private javax.swing.JTextField paymentTextField;
+    private javax.swing.JButton removeButton;
     private javax.swing.JPanel sidePanel;
+    private javax.swing.JLabel totalPriceLabel;
     // End of variables declaration//GEN-END:variables
 }
