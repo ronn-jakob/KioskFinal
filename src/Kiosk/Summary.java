@@ -127,8 +127,13 @@ public class Summary extends javax.swing.JFrame {
             @Override
             public void actionPerformed(java.awt.event.ActionEvent e) {
                 Customize customize = new Customize(conn, item.getMenuItem(), cart, index);
+                customize.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosed(java.awt.event.WindowEvent we) {
+                        refreshSummary();
+                    }
+                });
                 customize.setVisible(true);
-                dispose();
             }
         });
 
