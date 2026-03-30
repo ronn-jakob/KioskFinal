@@ -93,6 +93,8 @@ public class SelectOrder extends javax.swing.JFrame {
             @Override
             public void windowClosed(WindowEvent e) {
                 refreshOrderTotal();
+                SelectOrder.this.toFront();
+                SelectOrder.this.requestFocus();
             }
         });
         customize.setVisible(true);

@@ -78,7 +78,11 @@ public class Customize extends javax.swing.JFrame {
                 }
 
                 panel.setCardClick(() -> {
-                    selectedDrink = item;
+                    if (selectedDrink != null && selectedDrink.getId() == item.getId()) {
+                        selectedDrink = null;
+                    } else {
+                        selectedDrink = item;
+                    }
                     refreshDrinkSelection();
                     updateTotal();
                 });
