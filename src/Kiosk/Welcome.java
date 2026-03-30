@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package KioskMain;
+package Kiosk;
 
 /**
  *
@@ -26,12 +26,11 @@ public class Welcome extends javax.swing.JFrame {
 
     private void openOrderScreen(String selectedOrderType) {
         ordertype = selectedOrderType;
-
+        Cart cart = new Cart(selectedOrderType);
         SelectOrder order = new SelectOrder(selectedOrderType);
         order.setVisible(true);
         dispose();
     }
-
 
     /**
      * This method is called from within the constructor to initialize the form.

@@ -1,4 +1,4 @@
-package KioskMain;
+package Kiosk;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

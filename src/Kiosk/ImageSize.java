@@ -1,4 +1,4 @@
-package KioskMain;
+package Kiosk;
 
 import java.awt.Image;
 import java.net.URL;

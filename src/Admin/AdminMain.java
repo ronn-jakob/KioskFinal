@@ -102,7 +102,11 @@ public class AdminMain extends javax.swing.JFrame {
         increaseQuanButton = new javax.swing.JButton();
         removeButton = new javax.swing.JButton();
         clearButton = new javax.swing.JButton();
-        confirmOrder = new javax.swing.JButton();
+        confirmOrderButtonCO = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        totalAmountLabel = new javax.swing.JLabel();
+        discountCOComboBox = new javax.swing.JComboBox<>();
+        jPanel4 = new javax.swing.JPanel();
         editMenuPanel = new javax.swing.JPanel();
         orderLogsPanel = new javax.swing.JPanel();
 
@@ -381,7 +385,10 @@ public class AdminMain extends javax.swing.JFrame {
         jLabel4.setForeground(new java.awt.Color(243, 93, 93));
         jLabel4.setText("Total Price: ");
 
+        discountComboBox.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        discountComboBox.setForeground(new java.awt.Color(243, 93, 93));
         discountComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Discount", "PWD" }));
+        discountComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
 
         jLabel5.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(243, 93, 93));
@@ -621,57 +628,100 @@ public class AdminMain extends javax.swing.JFrame {
         clearButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         clearButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
-        confirmOrder.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        confirmOrder.setForeground(new java.awt.Color(243, 93, 93));
-        confirmOrder.setText("Confirm Order");
-        confirmOrder.setToolTipText("");
-        confirmOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
-        confirmOrder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        confirmOrderButtonCO.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        confirmOrderButtonCO.setForeground(new java.awt.Color(243, 93, 93));
+        confirmOrderButtonCO.setText("Confirm Order");
+        confirmOrderButtonCO.setToolTipText("");
+        confirmOrderButtonCO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
+        confirmOrderButtonCO.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+
+        jLabel2.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(243, 93, 93));
+        jLabel2.setText("Total Amount:");
+
+        totalAmountLabel.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        totalAmountLabel.setForeground(new java.awt.Color(243, 93, 93));
+        totalAmountLabel.setText(" ");
+
+        discountCOComboBox.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        discountCOComboBox.setForeground(new java.awt.Color(243, 93, 93));
+        discountCOComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Citizen", "PWD" }));
+        discountCOComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 552, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 514, Short.MAX_VALUE)
+        );
 
         javax.swing.GroupLayout createOrderPanelLayout = new javax.swing.GroupLayout(createOrderPanel);
         createOrderPanel.setLayout(createOrderPanelLayout);
         createOrderPanelLayout.setHorizontalGroup(
             createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createOrderPanelLayout.createSequentialGroup()
-                .addGap(3, 3, 3)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(createOrderPanelLayout.createSequentialGroup()
+                        .addGap(3, 3, 3)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(createOrderPanelLayout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(createOrderPanelLayout.createSequentialGroup()
-                            .addComponent(decreaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(increaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(createOrderPanelLayout.createSequentialGroup()
-                            .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(confirmOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(totalAmountLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createOrderPanelLayout.createSequentialGroup()
+                            .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(createOrderPanelLayout.createSequentialGroup()
+                                    .addComponent(decreaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(increaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(createOrderPanelLayout.createSequentialGroup()
+                                    .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(discountCOComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addGap(1, 1, 1)))
+                    .addComponent(confirmOrderButtonCO, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(123, Short.MAX_VALUE))
         );
         createOrderPanelLayout.setVerticalGroup(
             createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createOrderPanelLayout.createSequentialGroup()
+            .addGroup(createOrderPanelLayout.createSequentialGroup()
+                .addGap(26, 26, 26)
                 .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(createOrderPanelLayout.createSequentialGroup()
-                        .addGap(36, 36, 36)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 75, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(totalAmountLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(decreaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(increaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(confirmOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(72, 72, 72))
+                            .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                            .addComponent(discountCOComboBox))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(confirmOrderButtonCO, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(createOrderPanelLayout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(43, Short.MAX_VALUE))
         );
 
         mainCardPanel.add(createOrderPanel, "createOrderCard");
@@ -878,7 +928,7 @@ public class AdminMain extends javax.swing.JFrame {
     private javax.swing.JButton addOrderButton;
     private javax.swing.JButton calculateButton;
     private javax.swing.JButton clearButton;
-    private javax.swing.JButton confirmOrder;
+    private javax.swing.JButton confirmOrderButtonCO;
     private javax.swing.JButton creatAOButton;
     private javax.swing.JButton creatBButton;
     private javax.swing.JButton createCButton;
@@ -890,18 +940,21 @@ public class AdminMain extends javax.swing.JFrame {
     private javax.swing.JButton createWNButton;
     private javax.swing.JButton decreaseQuanButton;
     private javax.swing.JButton deleteButtonOrder;
+    private javax.swing.JComboBox<String> discountCOComboBox;
     private javax.swing.JComboBox<String> discountComboBox;
     private javax.swing.JButton editMenuButton;
     private javax.swing.JPanel editMenuPanel;
     private javax.swing.JButton editOrderButton;
     private javax.swing.JButton increaseQuanButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -919,6 +972,7 @@ public class AdminMain extends javax.swing.JFrame {
     private javax.swing.JTextField paymentTextField;
     private javax.swing.JButton removeButton;
     private javax.swing.JPanel sidePanel;
+    private javax.swing.JLabel totalAmountLabel;
     private javax.swing.JLabel totalPriceLabel;
     // End of variables declaration//GEN-END:variables
 }

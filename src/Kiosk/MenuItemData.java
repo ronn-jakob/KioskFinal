@@ -1,4 +1,4 @@
-package KioskMain;
+package Kiosk;
 
 public class MenuItemData {
 

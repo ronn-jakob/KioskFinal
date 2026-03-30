@@ -2,21 +2,28 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package KioskMain;
+package Kiosk;
 
-/**
- *
- * @author admin
- */
+import java.sql.Connection;
+
 public class Payment extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Payment
-     */
+    private Cart cart;
+    private java.sql.Connection conn;
+
     public Payment() {
         initComponents();
         setLocationRelativeTo(null);
         ImageSize.setFillImage(lblLogo, "Images/Logo.png");
+    }
+
+    public Payment(Cart cart, java.sql.Connection conn) {
+        initComponents();
+        setLocationRelativeTo(null);
+        ImageSize.setFillImage(lblLogo, "Images/Logo.png");
+
+        this.cart = cart;
+        this.conn = conn;
     }
 
     /**
@@ -103,7 +110,28 @@ public class Payment extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPayMouseClicked
-        
+        try {
+            if (conn == null) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Database connection is missing.");
+                return;
+            }
+
+            if (cart == null || cart.isEmpty()) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Your cart is empty.");
+                return;
+            }
+
+            OrderAdd dao = new OrderAdd();
+            int orderNumber = dao.saveOrder(conn, cart);
+
+            OrderNum num = new OrderNum(orderNumber);
+            num.setVisible(true);
+            dispose();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this, "Failed to save order: " + e.getMessage());
+        }
     }//GEN-LAST:event_btnPayMouseClicked
 
     /**
@@ -117,7 +145,7 @@ public class Payment extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
