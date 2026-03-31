@@ -46,6 +46,7 @@ public class AdminMain extends javax.swing.JFrame {
     
     private String userRole;
     PayOrder po;
+    CreateOrder co;
 
     public AdminMain(String userRole) {
         initComponents();
@@ -55,12 +56,15 @@ public class AdminMain extends javax.swing.JFrame {
         setTitle("Fast Food");
         conn = DatabaseConnection.connectDatabase(); //SQL Connection
         po = new PayOrder(conn, this);
+        co = new CreateOrder(conn, this);
         logoHolder.setIcon(resizedImage);
         
         this.userRole = userRole;
         setupRolePermissions();
         enableButtons();
         mainCreateOrderPanel.setLayout(new WrapLayout(FlowLayout.LEFT, 15, 15));
+        // Clear the placeholder null rows added by the form designer
+        ((javax.swing.table.DefaultTableModel) tableCreateOrder.getModel()).setRowCount(0);
 
 
         
@@ -855,7 +859,9 @@ public class AdminMain extends javax.swing.JFrame {
                     itemId,
                     name,
                     price,
-                    imagePath
+                    imagePath,
+                    co,
+                    "menu"
                 );
                 mainCreateOrderPanel.add(card);
             }
@@ -883,7 +889,9 @@ public class AdminMain extends javax.swing.JFrame {
                     drinkId,
                     rs.getString("drinkName"),
                     rs.getDouble("price"),
-                    rs.getString("image_path")
+                    rs.getString("image_path"),
+                    co,
+                    "drink"
                 );
                 mainCreateOrderPanel.add(card);
             }
@@ -911,7 +919,9 @@ public class AdminMain extends javax.swing.JFrame {
                     addonId,
                     rs.getString("addonName"),
                     rs.getDouble("price"),
-                    rs.getString("imagePath")
+                    rs.getString("imagePath"),
+                    co,
+                    "addon"
                 );
                 mainCreateOrderPanel.add(card);
             }
@@ -1055,12 +1065,11 @@ public class AdminMain extends javax.swing.JFrame {
     }//GEN-LAST:event_createCButtonActionPerformed
 
     private void increaseQuanCreateOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseQuanCreateOrderButtonActionPerformed
-        // TODO add your handling code here:
+        co.increaseQuantity();
     }//GEN-LAST:event_increaseQuanCreateOrderButtonActionPerformed
 
     private void removeButtonCreateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonCreateOrderActionPerformed
-        // TODO add your handling code here:
-
+        co.removeItem();
     }//GEN-LAST:event_removeButtonCreateOrderActionPerformed
 
     private void addOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderButtonActionPerformed
@@ -1122,19 +1131,19 @@ public class AdminMain extends javax.swing.JFrame {
     }//GEN-LAST:event_creatAOButtonActionPerformed
 
     private void decreaseQuanCreateOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decreaseQuanCreateOrderButtonActionPerformed
-        // TODO add your handling code here:
+        co.decreaseQuantity();
     }//GEN-LAST:event_decreaseQuanCreateOrderButtonActionPerformed
 
     private void clearButtonCreateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonCreateOrderActionPerformed
-        // TODO add your handling code here:
+        co.clearOrder();
     }//GEN-LAST:event_clearButtonCreateOrderActionPerformed
 
     private void discountCreateOrderComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountCreateOrderComboBoxActionPerformed
-        // TODO add your handling code here:
+        co.applyDiscount();
     }//GEN-LAST:event_discountCreateOrderComboBoxActionPerformed
 
     private void confirmOrderCreateOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmOrderCreateOrderButtonActionPerformed
-        // TODO add your handling code here:
+        co.confirmOrder();
     }//GEN-LAST:event_confirmOrderCreateOrderButtonActionPerformed
 
 
