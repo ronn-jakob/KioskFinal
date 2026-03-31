@@ -1,0 +1,11 @@
+# Build output
+build/
+dist/
+
+# NetBeans user-specific files
+nbproject/private/
+nbproject/Makefile-*.mk
+nbproject/Package-*.bash
+
+# macOS
+.DS_Store
