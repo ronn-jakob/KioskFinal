@@ -13,7 +13,19 @@ public class MenuCard extends JPanel {
 
     int itemId;
 
-    public MenuCard(int itemId,String name, double price, String imagePath){ 
+    /**
+     * Creates a MenuCard that adds the item to the given {@link CreateOrder}
+     * cart when the "Add" button is clicked.
+     *
+     * @param itemId   database primary key of the item
+     * @param name     display name
+     * @param price    unit price
+     * @param imagePath path to the item image
+     * @param co       the {@link CreateOrder} instance managing the cart
+     * @param itemType one of {@code "menu"}, {@code "drink"}, or {@code "addon"}
+     */
+    public MenuCard(int itemId, String name, double price, String imagePath,
+                    CreateOrder co, String itemType) {
 
         this.itemId = itemId;
 
@@ -39,7 +51,9 @@ public class MenuCard extends JPanel {
         // Button
         JButton addButton = new JButton("Add");
         addButton.addActionListener(e -> {
-            
+            if (co != null) {
+                co.addItemToTable(itemId, name, price, itemType);
+            }
         });
 
         // Bottom panel
@@ -50,5 +64,12 @@ public class MenuCard extends JPanel {
 
         add(imageLabel, BorderLayout.NORTH);
         add(bottomPanel, BorderLayout.CENTER);
+    }
+
+    /**
+     * Backward-compatible constructor (no-op Add button).
+     */
+    public MenuCard(int itemId, String name, double price, String imagePath) {
+        this(itemId, name, price, imagePath, null, null);
     }
 }
