@@ -4,8 +4,11 @@
  */
 package Admin;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +18,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -39,13 +45,8 @@ public class AdminMain extends javax.swing.JFrame {
     ImageIcon resizedImage = new ImageIcon(scaledImage);
     
     private String userRole;
-
-    // Pay Order state
-    private int currentOrderId = 0;
-    private double currentTotal = 0;
-    private double currentFinalTotal = 0;
-    private boolean currentOrderPaid = false;
-    private final List<Integer> orderItemIds = new ArrayList<>();
+    PayOrder po;
+    CreateOrder co;
 
     public AdminMain(String userRole) {
         initComponents();
@@ -54,17 +55,16 @@ public class AdminMain extends javax.swing.JFrame {
         setIconImage(kioskIcon);
         setTitle("Fast Food");
         conn = DatabaseConnection.connectDatabase(); //SQL Connection
+        po = new PayOrder(conn, this);
         logoHolder.setIcon(resizedImage);
         
         this.userRole = userRole;
         setupRolePermissions();
+        enableButtons();
+        mainCreateOrderPanel.setLayout(new WrapLayout(FlowLayout.LEFT, 15, 15));
+        co = new CreateOrder(conn, this);
 
-        // Wire pay-order panel buttons (not in GEN block)
-        orderNumButton.addActionListener(e -> loadOrder());
-        addOrderButton.addActionListener(e -> addOrderItem());
-        editOrderButton.addActionListener(e -> editOrderItem());
-        deleteButtonOrder.addActionListener(e -> deleteOrderItem());
-        discountComboBox.addActionListener(e -> { if (currentOrderId != 0) applyDiscount(); });
+        
     }
 
 
@@ -115,7 +115,7 @@ public class AdminMain extends javax.swing.JFrame {
         createDrinkButton = new javax.swing.JButton();
         creatAOButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tableCO = new javax.swing.JTable();
         decreaseQuanButton = new javax.swing.JButton();
         increaseQuanButton = new javax.swing.JButton();
         removeButton = new javax.swing.JButton();
@@ -124,7 +124,9 @@ public class AdminMain extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         totalAmountLabel = new javax.swing.JLabel();
         discountCOComboBox = new javax.swing.JComboBox<>();
-        jPanel4 = new javax.swing.JPanel();
+        mainCreateOrderPanel = new javax.swing.JPanel();
+        paymentCOTextField = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         editMenuPanel = new javax.swing.JPanel();
         orderLogsPanel = new javax.swing.JPanel();
 
@@ -327,6 +329,7 @@ public class AdminMain extends javax.swing.JFrame {
         orderNumButton.setBorder(null);
         orderNumButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         orderNumButton.setFocusPainted(false);
+        orderNumButton.addActionListener(this::orderNumButtonActionPerformed);
 
         calculateButton.setBackground(new java.awt.Color(122, 255, 89));
         calculateButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
@@ -385,19 +388,23 @@ public class AdminMain extends javax.swing.JFrame {
         addOrderButton.setText("Add");
         addOrderButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
         addOrderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        addOrderButton.setFocusable(false);
         addOrderButton.setRequestFocusEnabled(false);
+        addOrderButton.addActionListener(this::addOrderButtonActionPerformed);
 
         editOrderButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         editOrderButton.setForeground(new java.awt.Color(243, 93, 93));
         editOrderButton.setText("Edit");
         editOrderButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 0), 3));
         editOrderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        editOrderButton.addActionListener(this::editOrderButtonActionPerformed);
 
         deleteButtonOrder.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         deleteButtonOrder.setForeground(new java.awt.Color(243, 93, 93));
         deleteButtonOrder.setText("Delete");
         deleteButtonOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 102, 102), 3));
         deleteButtonOrder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        deleteButtonOrder.addActionListener(this::deleteButtonOrderActionPerformed);
 
         jLabel4.setFont(new java.awt.Font("Poppins", 1, 24)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(243, 93, 93));
@@ -407,6 +414,7 @@ public class AdminMain extends javax.swing.JFrame {
         discountComboBox.setForeground(new java.awt.Color(243, 93, 93));
         discountComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Discount", "PWD" }));
         discountComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        discountComboBox.addActionListener(this::discountComboBoxActionPerformed);
 
         jLabel5.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(243, 93, 93));
@@ -451,7 +459,7 @@ public class AdminMain extends javax.swing.JFrame {
                                 .addComponent(jLabel5)
                                 .addComponent(deleteButtonOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(discountComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(0, 126, Short.MAX_VALUE))
+                .addGap(0, 130, Short.MAX_VALUE))
         );
         payOrderPanelLayout.setVerticalGroup(
             payOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,6 +511,7 @@ public class AdminMain extends javax.swing.JFrame {
         createWNButton.setText("What's New");
         createWNButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         createWNButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        createWNButton.addActionListener(this::createWNButtonActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 20;
         gridBagConstraints.ipady = 20;
@@ -526,6 +535,7 @@ public class AdminMain extends javax.swing.JFrame {
         createPButton.setText("Pasta");
         createPButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         createPButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        createPButton.addActionListener(this::createPButtonActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 47;
         gridBagConstraints.ipady = 20;
@@ -537,6 +547,7 @@ public class AdminMain extends javax.swing.JFrame {
         creatBButton.setText("Burgers");
         creatBButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         creatBButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        creatBButton.addActionListener(this::creatBButtonActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 40;
         gridBagConstraints.ipady = 20;
@@ -548,6 +559,7 @@ public class AdminMain extends javax.swing.JFrame {
         createDesButton.setText("Dessert");
         createDesButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         createDesButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        createDesButton.addActionListener(this::createDesButtonActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.ipadx = 40;
         gridBagConstraints.ipady = 20;
@@ -557,9 +569,9 @@ public class AdminMain extends javax.swing.JFrame {
         createDrinkButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         createDrinkButton.setForeground(new java.awt.Color(243, 93, 93));
         createDrinkButton.setText("Drinks");
-        createDrinkButton.setActionCommand("Drinks");
         createDrinkButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         createDrinkButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        createDrinkButton.addActionListener(this::createDrinkButtonActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -572,9 +584,9 @@ public class AdminMain extends javax.swing.JFrame {
         creatAOButton.setForeground(new java.awt.Color(243, 93, 93));
         creatAOButton.setText("Add-ons");
         creatAOButton.setToolTipText("");
-        creatAOButton.setActionCommand("Add-ons");
         creatAOButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         creatAOButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        creatAOButton.addActionListener(this::creatAOButtonActionPerformed);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -583,22 +595,22 @@ public class AdminMain extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 9, 12);
         jPanel5.add(creatAOButton, gridBagConstraints);
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tableCO.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Item", "Quantity", "Price"
+                "Item", "Quantity", "Price", "Total"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class
+                java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -609,11 +621,12 @@ public class AdminMain extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable2);
-        if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
-            jTable2.getColumnModel().getColumn(1).setResizable(false);
-            jTable2.getColumnModel().getColumn(2).setResizable(false);
+        jScrollPane3.setViewportView(tableCO);
+        if (tableCO.getColumnModel().getColumnCount() > 0) {
+            tableCO.getColumnModel().getColumn(0).setResizable(false);
+            tableCO.getColumnModel().getColumn(1).setResizable(false);
+            tableCO.getColumnModel().getColumn(2).setResizable(false);
+            tableCO.getColumnModel().getColumn(3).setResizable(false);
         }
 
         decreaseQuanButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
@@ -622,6 +635,7 @@ public class AdminMain extends javax.swing.JFrame {
         decreaseQuanButton.setToolTipText("");
         decreaseQuanButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         decreaseQuanButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        decreaseQuanButton.addActionListener(this::decreaseQuanButtonActionPerformed);
 
         increaseQuanButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         increaseQuanButton.setForeground(new java.awt.Color(243, 93, 93));
@@ -645,6 +659,7 @@ public class AdminMain extends javax.swing.JFrame {
         clearButton.setToolTipText("");
         clearButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
         clearButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        clearButton.addActionListener(this::clearButtonActionPerformed);
 
         confirmOrderButtonCO.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         confirmOrderButtonCO.setForeground(new java.awt.Color(243, 93, 93));
@@ -652,6 +667,7 @@ public class AdminMain extends javax.swing.JFrame {
         confirmOrderButtonCO.setToolTipText("");
         confirmOrderButtonCO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
         confirmOrderButtonCO.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        confirmOrderButtonCO.addActionListener(this::confirmOrderButtonCOActionPerformed);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(243, 93, 93));
@@ -663,19 +679,28 @@ public class AdminMain extends javax.swing.JFrame {
 
         discountCOComboBox.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         discountCOComboBox.setForeground(new java.awt.Color(243, 93, 93));
-        discountCOComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Citizen", "PWD" }));
+        discountCOComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Discount", "PWD" }));
         discountCOComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        discountCOComboBox.addActionListener(this::discountCOComboBoxActionPerformed);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 552, Short.MAX_VALUE)
+        javax.swing.GroupLayout mainCreateOrderPanelLayout = new javax.swing.GroupLayout(mainCreateOrderPanel);
+        mainCreateOrderPanel.setLayout(mainCreateOrderPanelLayout);
+        mainCreateOrderPanelLayout.setHorizontalGroup(
+            mainCreateOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 601, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 514, Short.MAX_VALUE)
+        mainCreateOrderPanelLayout.setVerticalGroup(
+            mainCreateOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
+
+        paymentCOTextField.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        paymentCOTextField.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+
+        jLabel6.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
+        jLabel6.setForeground(new java.awt.Color(243, 93, 93));
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.TRAILING);
+        jLabel6.setText("Payment:");
 
         javax.swing.GroupLayout createOrderPanelLayout = new javax.swing.GroupLayout(createOrderPanel);
         createOrderPanel.setLayout(createOrderPanelLayout);
@@ -683,12 +708,15 @@ public class AdminMain extends javax.swing.JFrame {
             createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createOrderPanelLayout.createSequentialGroup()
                 .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(mainCreateOrderPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
-                        .addGap(3, 3, 3)
+                        .addContainerGap()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(195, 195, 195)
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(paymentCOTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -716,8 +744,8 @@ public class AdminMain extends javax.swing.JFrame {
         createOrderPanelLayout.setVerticalGroup(
             createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(createOrderPanelLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGap(44, 44, 44)
+                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -732,14 +760,21 @@ public class AdminMain extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                            .addComponent(discountCOComboBox))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(confirmOrderButtonCO, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(discountCOComboBox)))
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(43, Short.MAX_VALUE))
+                        .addComponent(mainCreateOrderPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(createOrderPanelLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(confirmOrderButtonCO, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                            .addComponent(paymentCOTextField)))
+                    .addGroup(createOrderPanelLayout.createSequentialGroup()
+                        .addGap(34, 34, 34)
+                        .addComponent(jLabel6)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         mainCardPanel.add(createOrderPanel, "createOrderCard");
@@ -750,7 +785,7 @@ public class AdminMain extends javax.swing.JFrame {
         editMenuPanel.setLayout(editMenuPanelLayout);
         editMenuPanelLayout.setHorizontalGroup(
             editMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1064, Short.MAX_VALUE)
+            .addGap(0, 1068, Short.MAX_VALUE)
         );
         editMenuPanelLayout.setVerticalGroup(
             editMenuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -765,7 +800,7 @@ public class AdminMain extends javax.swing.JFrame {
         orderLogsPanel.setLayout(orderLogsPanelLayout);
         orderLogsPanelLayout.setHorizontalGroup(
             orderLogsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1064, Short.MAX_VALUE)
+            .addGap(0, 1068, Short.MAX_VALUE)
         );
         orderLogsPanelLayout.setVerticalGroup(
             orderLogsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -796,6 +831,103 @@ public class AdminMain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadMenuItems(String categoryName) {
+        mainCreateOrderPanel.removeAll();
+
+        try {
+            String query = """
+                SELECT m.itemID, m.itemName, m.price, m.imagePath
+                FROM menu_items m
+                JOIN categories c ON m.categoryId = c.categoryId
+                WHERE c.categoryName = ?
+            """;
+
+            ps = conn.prepareStatement(query);
+            ps.setString(1, categoryName);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                String name = rs.getString("itemName");
+                double price = rs.getDouble("price");
+                String imagePath = rs.getString("imagePath");
+                int itemId = rs.getInt("itemID");
+
+                MenuCard card = new MenuCard(
+                    itemId,
+                    name,
+                    price,
+                    imagePath,
+                    co
+                );
+                mainCreateOrderPanel.add(card);
+            }
+
+            mainCreateOrderPanel.revalidate();
+            mainCreateOrderPanel.repaint();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void loadDrinks() {
+        mainCreateOrderPanel.removeAll();
+
+        try {
+            String query = "SELECT * FROM drinks";
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int drinkId = rs.getInt("drinkID");
+                
+                MenuCard card = new MenuCard(
+                    drinkId,
+                    rs.getString("drinkName"),
+                    rs.getDouble("price"),
+                    rs.getString("image_path"),
+                    co
+                );
+                mainCreateOrderPanel.add(card);
+            }
+
+            mainCreateOrderPanel.revalidate();
+            mainCreateOrderPanel.repaint();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void loadAddOns() {
+        mainCreateOrderPanel.removeAll();
+
+        try {
+            String query = "SELECT * FROM add_ons";
+            ps = conn.prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int addonId = rs.getInt("addonId");
+
+                MenuCard card = new MenuCard(
+                    addonId,
+                    rs.getString("addonName"),
+                    rs.getDouble("price"),
+                    rs.getString("imagePath"),
+                    co
+                );
+                mainCreateOrderPanel.add(card);
+            }
+
+            mainCreateOrderPanel.revalidate();
+            mainCreateOrderPanel.repaint();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void setupRolePermissions() {
         if ("admin".equalsIgnoreCase(userRole)) {
             editMenuButton.setEnabled(true);
@@ -810,6 +942,22 @@ public class AdminMain extends javax.swing.JFrame {
             
             orderLogsButton.setBackground(new Color(173, 68, 68));
             editMenuButton.setBackground(new Color(173, 68, 68));
+        }
+    }
+    
+    private void enableButtons(){
+        if(po.currentOrderId == 0){
+            calculateButton.setEnabled(false);
+            addOrderButton.setEnabled(false);
+            editOrderButton.setEnabled(false);
+            deleteButtonOrder.setEnabled(false);
+            discountComboBox.setEnabled(false);
+        }else{
+            calculateButton.setEnabled(true);
+            addOrderButton.setEnabled(true);
+            editOrderButton.setEnabled(true);
+            deleteButtonOrder.setEnabled(true);
+            discountComboBox.setEnabled(true);
         }
     }
     
@@ -901,11 +1049,13 @@ public class AdminMain extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutButtonActionPerformed
 
     private void calculateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculateButtonActionPerformed
-        calculateChange();
+
+        po.calculateChange();
     }//GEN-LAST:event_calculateButtonActionPerformed
 
     private void createCButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createCButtonActionPerformed
         // TODO add your handling code here:
+        loadMenuItems("Chicken");
     }//GEN-LAST:event_createCButtonActionPerformed
 
     private void increaseQuanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseQuanButtonActionPerformed
@@ -914,397 +1064,87 @@ public class AdminMain extends javax.swing.JFrame {
 
     private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
         // TODO add your handling code here:
+        co.removeCartItem();
     }//GEN-LAST:event_removeButtonActionPerformed
 
-    // ---- Pay Order panel logic ----
+    private void addOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderButtonActionPerformed
+        // TODO add your handling code here:
+        po.addOrderItem();
 
-    /** Returns 0.20 for Senior Discount / PWD, otherwise 0. */
-    private double getDiscountRate() {
-        String discount = (String) discountComboBox.getSelectedItem();
-        return ("Senior Discount".equals(discount) || "PWD".equals(discount)) ? 0.20 : 0.0;
-    }
+        
+    }//GEN-LAST:event_addOrderButtonActionPerformed
 
-    private void loadOrder() {
-        String orderNumStr = orderNumTextField.getText().trim();
-        if (orderNumStr.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please enter an order number.");
-            return;
-        }
-        int orderNum;
-        try {
-            orderNum = Integer.parseInt(orderNumStr);
-        } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Order number must be a whole number.");
-            return;
-        }
+    private void editOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editOrderButtonActionPerformed
+        // TODO add your handling code here:
+        po.editOrderItem();
+    }//GEN-LAST:event_editOrderButtonActionPerformed
 
-        String sql = "SELECT orderId, total, discountRate, finalTotal, orderStatus FROM orders WHERE orderNumber = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, orderNum);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (!rs.next()) {
-                    javax.swing.JOptionPane.showMessageDialog(this, "Order #" + orderNum + " not found.");
-                    return;
-                }
-                currentOrderId   = rs.getInt("orderId");
-                currentTotal     = rs.getDouble("total");
-                String status    = rs.getString("orderStatus");
-                currentOrderPaid = "paid".equalsIgnoreCase(status);
+    private void deleteButtonOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonOrderActionPerformed
+        // TODO add your handling code here:
+        po.deleteOrderItem();
+    }//GEN-LAST:event_deleteButtonOrderActionPerformed
 
-                if (currentOrderPaid) {
-                    javax.swing.JOptionPane.showMessageDialog(this,
-                        "Order #" + orderNum + " has already been paid.");
-                    return;
-                }
-            }
-        } catch (SQLException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Database error: " + ex.getMessage());
-            return;
-        }
+    private void orderNumButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderNumButtonActionPerformed
+        // TODO add your handling code here:
+        po.loadOrder();
+        enableButtons();
+    }//GEN-LAST:event_orderNumButtonActionPerformed
 
-        loadOrderItems();
-        applyDiscount();
-    }
+    private void discountComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountComboBoxActionPerformed
+        // TODO add your handling code here:
+        if (po.currentOrderId != 0) po.applyDiscount(); 
+    }//GEN-LAST:event_discountComboBoxActionPerformed
 
-    private void loadOrderItems() {
-        String sql =
-            "SELECT oi.orderItemId, mi.itemName, d.drinkName, " +
-            "GROUP_CONCAT(a.addonName ORDER BY a.addonId SEPARATOR ', ') AS addons, " +
-            "oi.quantity, oi.itemTotal " +
-            "FROM order_items oi " +
-            "JOIN menu_items mi ON mi.itemID = oi.menuItemId " +
-            "LEFT JOIN order_item_drinks oid ON oid.orderItemId = oi.orderItemId " +
-            "LEFT JOIN drinks d ON d.drinkID = oid.drinkId " +
-            "LEFT JOIN order_item_addons oia ON oia.orderItemId = oi.orderItemId " +
-            "LEFT JOIN add_ons a ON a.addonId = oia.addonId " +
-            "WHERE oi.orderId = ? " +
-            "GROUP BY oi.orderItemId, mi.itemName, d.drinkName, oi.quantity, oi.itemTotal";
+    private void createWNButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createWNButtonActionPerformed
+        // TODO add your handling code here:
+        loadMenuItems("What's New");
+    }//GEN-LAST:event_createWNButtonActionPerformed
 
-        DefaultTableModel model = (DefaultTableModel) orderTable.getModel();
-        model.setRowCount(0);
-        orderItemIds.clear();
+    private void createPButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createPButtonActionPerformed
+        // TODO add your handling code here:
+        loadMenuItems("Pasta");
+    }//GEN-LAST:event_createPButtonActionPerformed
 
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, currentOrderId);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    orderItemIds.add(rs.getInt("orderItemId"));
-                    String drinks = rs.getString("drinkName");
-                    String addons = rs.getString("addons");
-                    model.addRow(new Object[]{
-                        rs.getString("itemName"),
-                        drinks != null ? drinks : "None",
-                        addons != null ? addons : "None",
-                        rs.getInt("quantity"),
-                        rs.getDouble("itemTotal")
-                    });
-                }
-            }
-        } catch (SQLException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error loading order items: " + ex.getMessage());
-        }
-    }
+    private void creatBButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creatBButtonActionPerformed
+        // TODO add your handling code here:
+        loadMenuItems("Burgers");
+    }//GEN-LAST:event_creatBButtonActionPerformed
 
-    private void applyDiscount() {
-        double discountRate   = getDiscountRate();
-        double discountAmount = currentTotal * discountRate;
-        currentFinalTotal     = currentTotal - discountAmount;
-        totalPriceLabel.setText(String.format("\u20b1%.2f", currentFinalTotal));
-    }
+    private void createDesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDesButtonActionPerformed
+        // TODO add your handling code here:
+        loadMenuItems("Desserts");
+    }//GEN-LAST:event_createDesButtonActionPerformed
 
-    private void calculateChange() {
-        if (currentOrderId == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please load an order first.");
-            return;
-        }
-        String paymentStr = paymentTextField.getText().trim();
-        if (paymentStr.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please enter a payment amount.");
-            return;
-        }
-        double payment;
-        try {
-            payment = Double.parseDouble(paymentStr);
-        } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Invalid payment amount.");
-            return;
-        }
-        if (payment < currentFinalTotal) {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                String.format("Payment is insufficient.\nTotal due: \u20b1%.2f", currentFinalTotal));
-            return;
-        }
-        double change = payment - currentFinalTotal;
-        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
-            String.format("Total:    \u20b1%.2f%nPayment:  \u20b1%.2f%nChange:   \u20b1%.2f%n%nConfirm payment?",
-                currentFinalTotal, payment, change),
-            "Confirm Payment", javax.swing.JOptionPane.YES_NO_OPTION);
-        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
-            processPayment(payment, change);
-        }
-    }
+    private void createDrinkButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDrinkButtonActionPerformed
+        // TODO add your handling code here:
+        loadDrinks();
+    }//GEN-LAST:event_createDrinkButtonActionPerformed
 
-    private void processPayment(double payment, double change) {
-        double discountRate   = getDiscountRate();
-        double discountAmount = currentTotal * discountRate;
-        try {
-            conn.setAutoCommit(false);
+    private void creatAOButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_creatAOButtonActionPerformed
+        // TODO add your handling code here:
+        loadAddOns();
+    }//GEN-LAST:event_creatAOButtonActionPerformed
 
-            String updateOrder = "UPDATE orders SET discountRate=?, discountAmount=?, finalTotal=?, orderStatus='paid' WHERE orderId=?";
-            try (PreparedStatement ps = conn.prepareStatement(updateOrder)) {
-                ps.setDouble(1, discountRate);
-                ps.setDouble(2, discountAmount);
-                ps.setDouble(3, currentFinalTotal);
-                ps.setInt(4, currentOrderId);
-                ps.executeUpdate();
-            }
+    private void decreaseQuanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decreaseQuanButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_decreaseQuanButtonActionPerformed
 
-            String upsertPayment =
-                "INSERT INTO payments(orderId, amountReceived, changeAmount) VALUES(?,?,?) " +
-                "ON DUPLICATE KEY UPDATE amountReceived=VALUES(amountReceived), changeAmount=VALUES(changeAmount)";
-            try (PreparedStatement ps = conn.prepareStatement(upsertPayment)) {
-                ps.setInt(1, currentOrderId);
-                ps.setDouble(2, payment);
-                ps.setDouble(3, change);
-                ps.executeUpdate();
-            }
+    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+        // TODO add your handling code here:
+        co.clearCart();
+    }//GEN-LAST:event_clearButtonActionPerformed
 
-            conn.commit();
-            javax.swing.JOptionPane.showMessageDialog(this,
-                String.format("Payment processed!\nChange: \u20b1%.2f", change));
-            clearPayOrderForm();
-        } catch (SQLException ex) {
-            try { conn.rollback(); } catch (SQLException rollbackEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Rollback failed", rollbackEx);
-            }
-            javax.swing.JOptionPane.showMessageDialog(this, "Error processing payment: " + ex.getMessage());
-        } finally {
-            try { conn.setAutoCommit(true); } catch (SQLException autoCommitEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Failed to restore auto-commit", autoCommitEx);
-            }
-        }
-    }
+    private void discountCOComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountCOComboBoxActionPerformed
+        // TODO add your handling code here:
+        co.getDiscountRate();
+    }//GEN-LAST:event_discountCOComboBoxActionPerformed
 
-    private void addOrderItem() {
-        if (currentOrderId == 0) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please load an order first.");
-            return;
-        }
+    private void confirmOrderButtonCOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmOrderButtonCOActionPerformed
+        // TODO add your handling code here:
+        co.confirmOrder();
+    }//GEN-LAST:event_confirmOrderButtonCOActionPerformed
 
-        List<String> names  = new ArrayList<>();
-        List<Integer> ids   = new ArrayList<>();
-        List<Double> prices = new ArrayList<>();
 
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT itemID, itemName, price FROM menu_items ORDER BY itemName");
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                ids.add(rs.getInt("itemID"));
-                names.add(rs.getString("itemName"));
-                prices.add(rs.getDouble("price"));
-            }
-        } catch (SQLException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error loading menu: " + ex.getMessage());
-            return;
-        }
-
-        if (names.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(this, "No menu items available.");
-            return;
-        }
-
-        javax.swing.JComboBox<String> itemCombo = new javax.swing.JComboBox<>(names.toArray(new String[0]));
-        javax.swing.JTextField qtyField = new javax.swing.JTextField("1", 6);
-        Object[] message = {"Select Menu Item:", itemCombo, "Quantity:", qtyField};
-
-        int result = javax.swing.JOptionPane.showConfirmDialog(this, message,
-            "Add Item to Order", javax.swing.JOptionPane.OK_CANCEL_OPTION);
-        if (result != javax.swing.JOptionPane.OK_OPTION) return;
-
-        int selectedIdx = itemCombo.getSelectedIndex();
-        int menuItemId  = ids.get(selectedIdx);
-        double price    = prices.get(selectedIdx);
-        int qty;
-        try {
-            qty = Integer.parseInt(qtyField.getText().trim());
-            if (qty <= 0) throw new NumberFormatException();
-        } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid quantity (positive integer).");
-            return;
-        }
-        double itemTotal = price * qty;
-
-        try {
-            conn.setAutoCommit(false);
-
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "INSERT INTO order_items(orderId, menuItemId, quantity, pricePerItem, itemTotal) VALUES(?,?,?,?,?)")) {
-                ps.setInt(1, currentOrderId);
-                ps.setInt(2, menuItemId);
-                ps.setInt(3, qty);
-                ps.setDouble(4, price);
-                ps.setDouble(5, itemTotal);
-                ps.executeUpdate();
-            }
-
-            currentTotal = recalcOrderTotal();
-            conn.commit();
-
-            loadOrderItems();
-            applyDiscount();
-        } catch (SQLException ex) {
-            try { conn.rollback(); } catch (SQLException rollbackEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Rollback failed", rollbackEx);
-            }
-            javax.swing.JOptionPane.showMessageDialog(this, "Error adding item: " + ex.getMessage());
-        } finally {
-            try { conn.setAutoCommit(true); } catch (SQLException autoCommitEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Failed to restore auto-commit", autoCommitEx);
-            }
-        }
-    }
-
-    private void editOrderItem() {
-        int selectedRow = orderTable.getSelectedRow();
-        if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please select an item to edit.");
-            return;
-        }
-
-        int orderItemId  = orderItemIds.get(selectedRow);
-        int currentQty   = (Integer) orderTable.getValueAt(selectedRow, 3);
-        double rowTotal  = (Double) orderTable.getValueAt(selectedRow, 4);
-        double unitPrice = (currentQty > 0) ? rowTotal / currentQty : rowTotal;
-
-        String input = javax.swing.JOptionPane.showInputDialog(this,
-            "Enter new quantity:", String.valueOf(currentQty));
-        if (input == null || input.trim().isEmpty()) return;
-
-        int newQty;
-        try {
-            newQty = Integer.parseInt(input.trim());
-            if (newQty <= 0) throw new NumberFormatException();
-        } catch (NumberFormatException e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please enter a valid quantity (positive integer).");
-            return;
-        }
-
-        double newItemTotal = unitPrice * newQty;
-
-        try {
-            conn.setAutoCommit(false);
-
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "UPDATE order_items SET quantity=?, itemTotal=? WHERE orderItemId=?")) {
-                ps.setInt(1, newQty);
-                ps.setDouble(2, newItemTotal);
-                ps.setInt(3, orderItemId);
-                ps.executeUpdate();
-            }
-
-            currentTotal = recalcOrderTotal();
-            conn.commit();
-
-            loadOrderItems();
-            applyDiscount();
-        } catch (SQLException ex) {
-            try { conn.rollback(); } catch (SQLException rollbackEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Rollback failed", rollbackEx);
-            }
-            javax.swing.JOptionPane.showMessageDialog(this, "Error editing item: " + ex.getMessage());
-        } finally {
-            try { conn.setAutoCommit(true); } catch (SQLException autoCommitEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Failed to restore auto-commit", autoCommitEx);
-            }
-        }
-    }
-
-    private void deleteOrderItem() {
-        int selectedRow = orderTable.getSelectedRow();
-        if (selectedRow == -1) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Please select an item to delete.");
-            return;
-        }
-
-        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete this item?",
-            "Confirm Delete", javax.swing.JOptionPane.YES_NO_OPTION);
-        if (confirm != javax.swing.JOptionPane.YES_OPTION) return;
-
-        int orderItemId = orderItemIds.get(selectedRow);
-
-        try {
-            conn.setAutoCommit(false);
-
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "DELETE FROM order_item_addons WHERE orderItemId=?")) {
-                ps.setInt(1, orderItemId);
-                ps.executeUpdate();
-            }
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "DELETE FROM order_item_drinks WHERE orderItemId=?")) {
-                ps.setInt(1, orderItemId);
-                ps.executeUpdate();
-            }
-            try (PreparedStatement ps = conn.prepareStatement(
-                    "DELETE FROM order_items WHERE orderItemId=?")) {
-                ps.setInt(1, orderItemId);
-                ps.executeUpdate();
-            }
-
-            currentTotal = recalcOrderTotal();
-            conn.commit();
-
-            loadOrderItems();
-            applyDiscount();
-        } catch (SQLException ex) {
-            try { conn.rollback(); } catch (SQLException rollbackEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Rollback failed", rollbackEx);
-            }
-            javax.swing.JOptionPane.showMessageDialog(this, "Error deleting item: " + ex.getMessage());
-        } finally {
-            try { conn.setAutoCommit(true); } catch (SQLException autoCommitEx) {
-                logger.log(java.util.logging.Level.SEVERE, "Failed to restore auto-commit", autoCommitEx);
-            }
-        }
-    }
-
-    /**
-     * Recalculates and persists only the {@code total} column in the orders table.
-     * {@code finalTotal} (discount-adjusted) is set separately by {@link #processPayment}.
-     */
-    private double recalcOrderTotal() throws SQLException {
-        double newTotal = 0;
-        try (PreparedStatement ps = conn.prepareStatement(
-                "SELECT COALESCE(SUM(itemTotal), 0) AS total FROM order_items WHERE orderId=?")) {
-            ps.setInt(1, currentOrderId);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) newTotal = rs.getDouble("total");
-            }
-        }
-        try (PreparedStatement ps = conn.prepareStatement(
-                "UPDATE orders SET total=? WHERE orderId=?")) {
-            ps.setDouble(1, newTotal);
-            ps.setInt(2, currentOrderId);
-            ps.executeUpdate();
-        }
-        return newTotal;
-    }
-
-    private void clearPayOrderForm() {
-        currentOrderId    = 0;
-        currentTotal      = 0;
-        currentFinalTotal = 0;
-        currentOrderPaid  = false;
-        orderItemIds.clear();
-        orderNumTextField.setText("");
-        paymentTextField.setText("");
-        totalPriceLabel.setText(" ");
-        discountComboBox.setSelectedIndex(0);
-        ((DefaultTableModel) orderTable.getModel()).setRowCount(0);
-    }
-
-    // ---- end Pay Order panel logic ----
 
     /**
      * @param args the command line arguments
@@ -1333,54 +1173,56 @@ public class AdminMain extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addOrderButton;
-    private javax.swing.JButton calculateButton;
-    private javax.swing.JButton clearButton;
-    private javax.swing.JButton confirmOrderButtonCO;
-    private javax.swing.JButton creatAOButton;
-    private javax.swing.JButton creatBButton;
-    private javax.swing.JButton createCButton;
-    private javax.swing.JButton createDesButton;
-    private javax.swing.JButton createDrinkButton;
-    private javax.swing.JButton createOrderButton;
-    private javax.swing.JPanel createOrderPanel;
-    private javax.swing.JButton createPButton;
-    private javax.swing.JButton createWNButton;
-    private javax.swing.JButton decreaseQuanButton;
-    private javax.swing.JButton deleteButtonOrder;
-    private javax.swing.JComboBox<String> discountCOComboBox;
-    private javax.swing.JComboBox<String> discountComboBox;
-    private javax.swing.JButton editMenuButton;
-    private javax.swing.JPanel editMenuPanel;
-    private javax.swing.JButton editOrderButton;
-    private javax.swing.JButton increaseQuanButton;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JLabel logoHolder;
-    private javax.swing.JButton logoutButton;
-    private javax.swing.JPanel mainCardPanel;
-    private javax.swing.JButton orderLogsButton;
-    private javax.swing.JPanel orderLogsPanel;
-    private javax.swing.JButton orderNumButton;
-    private javax.swing.JTextField orderNumTextField;
-    private javax.swing.JTable orderTable;
-    private javax.swing.JButton payOrderButton;
-    private javax.swing.JPanel payOrderPanel;
-    private javax.swing.JTextField paymentTextField;
-    private javax.swing.JButton removeButton;
-    private javax.swing.JPanel sidePanel;
-    private javax.swing.JLabel totalAmountLabel;
-    private javax.swing.JLabel totalPriceLabel;
+    public javax.swing.JButton addOrderButton;
+    public javax.swing.JButton calculateButton;
+    public javax.swing.JButton clearButton;
+    public javax.swing.JButton confirmOrderButtonCO;
+    public javax.swing.JButton creatAOButton;
+    public javax.swing.JButton creatBButton;
+    public javax.swing.JButton createCButton;
+    public javax.swing.JButton createDesButton;
+    public javax.swing.JButton createDrinkButton;
+    public javax.swing.JButton createOrderButton;
+    public javax.swing.JPanel createOrderPanel;
+    public javax.swing.JButton createPButton;
+    public javax.swing.JButton createWNButton;
+    public javax.swing.JButton decreaseQuanButton;
+    public javax.swing.JButton deleteButtonOrder;
+    public javax.swing.JComboBox<String> discountCOComboBox;
+    public javax.swing.JComboBox<String> discountComboBox;
+    public javax.swing.JButton editMenuButton;
+    public javax.swing.JPanel editMenuPanel;
+    public javax.swing.JButton editOrderButton;
+    public javax.swing.JButton increaseQuanButton;
+    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JLabel jLabel3;
+    public javax.swing.JLabel jLabel4;
+    public javax.swing.JLabel jLabel5;
+    public javax.swing.JLabel jLabel6;
+    public javax.swing.JPanel jPanel1;
+    public javax.swing.JPanel jPanel2;
+    public javax.swing.JPanel jPanel3;
+    public javax.swing.JPanel jPanel5;
+    public javax.swing.JScrollPane jScrollPane2;
+    public javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JLabel logoHolder;
+    public javax.swing.JButton logoutButton;
+    public javax.swing.JPanel mainCardPanel;
+    public javax.swing.JPanel mainCreateOrderPanel;
+    public javax.swing.JButton orderLogsButton;
+    public javax.swing.JPanel orderLogsPanel;
+    public javax.swing.JButton orderNumButton;
+    public javax.swing.JTextField orderNumTextField;
+    public javax.swing.JTable orderTable;
+    public javax.swing.JButton payOrderButton;
+    public javax.swing.JPanel payOrderPanel;
+    public javax.swing.JTextField paymentCOTextField;
+    public javax.swing.JTextField paymentTextField;
+    public javax.swing.JButton removeButton;
+    public javax.swing.JPanel sidePanel;
+    public javax.swing.JTable tableCO;
+    public javax.swing.JLabel totalAmountLabel;
+    public javax.swing.JLabel totalPriceLabel;
     // End of variables declaration//GEN-END:variables
 }

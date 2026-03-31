@@ -8,6 +8,8 @@ package Kiosk;
  *
  * @author admin
  */
+import Admin.LoginForm;
+
 public class Welcome extends javax.swing.JFrame {
 
     private String ordertype = "";
@@ -132,6 +134,11 @@ public class Welcome extends javax.swing.JFrame {
 
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         logo.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        logo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoMouseClicked(evt);
+            }
+        });
         jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 100, 220, 200));
 
         jLabel1.setFont(new java.awt.Font("Arial Narrow", 0, 22)); // NOI18N
@@ -183,6 +190,12 @@ public class Welcome extends javax.swing.JFrame {
     private void dineinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dineinMouseClicked
         openOrderScreen("Dine In");
     }//GEN-LAST:event_dineinMouseClicked
+
+    private void logoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoMouseClicked
+        // TODO add your handling code here:
+        Welcome.this.dispose();
+        new LoginForm().setVisible(true);
+    }//GEN-LAST:event_logoMouseClicked
 
     /**
      * @param args the command line arguments

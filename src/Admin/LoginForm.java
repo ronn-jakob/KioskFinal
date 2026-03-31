@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
+import Kiosk.Welcome;
 
 
 
@@ -133,6 +134,7 @@ public class LoginForm extends javax.swing.JFrame {
                 cancelButtonMouseExited(evt);
             }
         });
+        cancelButton.addActionListener(this::cancelButtonActionPerformed);
 
         createAccountLabel.setFont(new java.awt.Font("Poppins", 0, 14)); // NOI18N
         createAccountLabel.setForeground(new java.awt.Color(255, 255, 255));
@@ -275,6 +277,12 @@ public class LoginForm extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_loginButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        // TODO add your handling code here:
+        LoginForm.this.dispose();
+        new Welcome().setVisible(true);
+    }//GEN-LAST:event_cancelButtonActionPerformed
 
     /**
      * @param args the command line arguments
