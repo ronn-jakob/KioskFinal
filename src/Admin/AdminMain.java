@@ -46,7 +46,6 @@ public class AdminMain extends javax.swing.JFrame {
     
     private String userRole;
     PayOrder po;
-    CreateOrder co;
 
     public AdminMain(String userRole) {
         initComponents();
@@ -62,7 +61,7 @@ public class AdminMain extends javax.swing.JFrame {
         setupRolePermissions();
         enableButtons();
         mainCreateOrderPanel.setLayout(new WrapLayout(FlowLayout.LEFT, 15, 15));
-        co = new CreateOrder(conn, this);
+
 
         
     }
@@ -115,15 +114,15 @@ public class AdminMain extends javax.swing.JFrame {
         createDrinkButton = new javax.swing.JButton();
         creatAOButton = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tableCO = new javax.swing.JTable();
-        decreaseQuanButton = new javax.swing.JButton();
-        increaseQuanButton = new javax.swing.JButton();
-        removeButton = new javax.swing.JButton();
-        clearButton = new javax.swing.JButton();
-        confirmOrderButtonCO = new javax.swing.JButton();
+        tableCreateOrder = new javax.swing.JTable();
+        decreaseQuanCreateOrderButton = new javax.swing.JButton();
+        increaseQuanCreateOrderButton = new javax.swing.JButton();
+        removeButtonCreateOrder = new javax.swing.JButton();
+        clearButtonCreateOrder = new javax.swing.JButton();
+        confirmOrderCreateOrderButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         totalAmountLabel = new javax.swing.JLabel();
-        discountCOComboBox = new javax.swing.JComboBox<>();
+        discountCreateOrderComboBox = new javax.swing.JComboBox<>();
         mainCreateOrderPanel = new javax.swing.JPanel();
         paymentCOTextField = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
@@ -595,7 +594,7 @@ public class AdminMain extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(9, 0, 9, 12);
         jPanel5.add(creatAOButton, gridBagConstraints);
 
-        tableCO.setModel(new javax.swing.table.DefaultTableModel(
+        tableCreateOrder.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -621,53 +620,53 @@ public class AdminMain extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(tableCO);
-        if (tableCO.getColumnModel().getColumnCount() > 0) {
-            tableCO.getColumnModel().getColumn(0).setResizable(false);
-            tableCO.getColumnModel().getColumn(1).setResizable(false);
-            tableCO.getColumnModel().getColumn(2).setResizable(false);
-            tableCO.getColumnModel().getColumn(3).setResizable(false);
+        jScrollPane3.setViewportView(tableCreateOrder);
+        if (tableCreateOrder.getColumnModel().getColumnCount() > 0) {
+            tableCreateOrder.getColumnModel().getColumn(0).setResizable(false);
+            tableCreateOrder.getColumnModel().getColumn(1).setResizable(false);
+            tableCreateOrder.getColumnModel().getColumn(2).setResizable(false);
+            tableCreateOrder.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        decreaseQuanButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        decreaseQuanButton.setForeground(new java.awt.Color(243, 93, 93));
-        decreaseQuanButton.setText("Decrease");
-        decreaseQuanButton.setToolTipText("");
-        decreaseQuanButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
-        decreaseQuanButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        decreaseQuanButton.addActionListener(this::decreaseQuanButtonActionPerformed);
+        decreaseQuanCreateOrderButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        decreaseQuanCreateOrderButton.setForeground(new java.awt.Color(243, 93, 93));
+        decreaseQuanCreateOrderButton.setText("Decrease");
+        decreaseQuanCreateOrderButton.setToolTipText("");
+        decreaseQuanCreateOrderButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        decreaseQuanCreateOrderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        decreaseQuanCreateOrderButton.addActionListener(this::decreaseQuanCreateOrderButtonActionPerformed);
 
-        increaseQuanButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        increaseQuanButton.setForeground(new java.awt.Color(243, 93, 93));
-        increaseQuanButton.setText("Increase");
-        increaseQuanButton.setToolTipText("");
-        increaseQuanButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
-        increaseQuanButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        increaseQuanButton.addActionListener(this::increaseQuanButtonActionPerformed);
+        increaseQuanCreateOrderButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        increaseQuanCreateOrderButton.setForeground(new java.awt.Color(243, 93, 93));
+        increaseQuanCreateOrderButton.setText("Increase");
+        increaseQuanCreateOrderButton.setToolTipText("");
+        increaseQuanCreateOrderButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        increaseQuanCreateOrderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        increaseQuanCreateOrderButton.addActionListener(this::increaseQuanCreateOrderButtonActionPerformed);
 
-        removeButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        removeButton.setForeground(new java.awt.Color(243, 93, 93));
-        removeButton.setText("Remove");
-        removeButton.setToolTipText("");
-        removeButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
-        removeButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        removeButton.addActionListener(this::removeButtonActionPerformed);
+        removeButtonCreateOrder.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        removeButtonCreateOrder.setForeground(new java.awt.Color(243, 93, 93));
+        removeButtonCreateOrder.setText("Remove");
+        removeButtonCreateOrder.setToolTipText("");
+        removeButtonCreateOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        removeButtonCreateOrder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        removeButtonCreateOrder.addActionListener(this::removeButtonCreateOrderActionPerformed);
 
-        clearButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        clearButton.setForeground(new java.awt.Color(243, 93, 93));
-        clearButton.setText("Cancel/Clear");
-        clearButton.setToolTipText("");
-        clearButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
-        clearButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        clearButton.addActionListener(this::clearButtonActionPerformed);
+        clearButtonCreateOrder.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        clearButtonCreateOrder.setForeground(new java.awt.Color(243, 93, 93));
+        clearButtonCreateOrder.setText("Cancel/Clear");
+        clearButtonCreateOrder.setToolTipText("");
+        clearButtonCreateOrder.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        clearButtonCreateOrder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        clearButtonCreateOrder.addActionListener(this::clearButtonCreateOrderActionPerformed);
 
-        confirmOrderButtonCO.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        confirmOrderButtonCO.setForeground(new java.awt.Color(243, 93, 93));
-        confirmOrderButtonCO.setText("Confirm Order");
-        confirmOrderButtonCO.setToolTipText("");
-        confirmOrderButtonCO.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
-        confirmOrderButtonCO.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        confirmOrderButtonCO.addActionListener(this::confirmOrderButtonCOActionPerformed);
+        confirmOrderCreateOrderButton.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        confirmOrderCreateOrderButton.setForeground(new java.awt.Color(243, 93, 93));
+        confirmOrderCreateOrderButton.setText("Confirm Order");
+        confirmOrderCreateOrderButton.setToolTipText("");
+        confirmOrderCreateOrderButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(102, 255, 102), 3));
+        confirmOrderCreateOrderButton.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        confirmOrderCreateOrderButton.addActionListener(this::confirmOrderCreateOrderButtonActionPerformed);
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(243, 93, 93));
@@ -677,11 +676,11 @@ public class AdminMain extends javax.swing.JFrame {
         totalAmountLabel.setForeground(new java.awt.Color(243, 93, 93));
         totalAmountLabel.setText(" ");
 
-        discountCOComboBox.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        discountCOComboBox.setForeground(new java.awt.Color(243, 93, 93));
-        discountCOComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Discount", "PWD" }));
-        discountCOComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
-        discountCOComboBox.addActionListener(this::discountCOComboBoxActionPerformed);
+        discountCreateOrderComboBox.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        discountCreateOrderComboBox.setForeground(new java.awt.Color(243, 93, 93));
+        discountCreateOrderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "None", "Senior Discount", "PWD" }));
+        discountCreateOrderComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(243, 93, 93), 3));
+        discountCreateOrderComboBox.addActionListener(this::discountCreateOrderComboBoxActionPerformed);
 
         javax.swing.GroupLayout mainCreateOrderPanelLayout = new javax.swing.GroupLayout(mainCreateOrderPanel);
         mainCreateOrderPanel.setLayout(mainCreateOrderPanelLayout);
@@ -728,17 +727,17 @@ public class AdminMain extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, createOrderPanelLayout.createSequentialGroup()
                             .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addGroup(createOrderPanelLayout.createSequentialGroup()
-                                    .addComponent(decreaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(decreaseQuanCreateOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(increaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(increaseQuanCreateOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(removeButtonCreateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(createOrderPanelLayout.createSequentialGroup()
-                                    .addComponent(clearButton, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(clearButtonCreateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(discountCOComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addComponent(discountCreateOrderComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                             .addGap(1, 1, 1)))
-                    .addComponent(confirmOrderButtonCO, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(confirmOrderCreateOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 337, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(123, Short.MAX_VALUE))
         );
         createOrderPanelLayout.setVerticalGroup(
@@ -754,13 +753,13 @@ public class AdminMain extends javax.swing.JFrame {
                             .addComponent(totalAmountLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(decreaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(increaseQuanButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(removeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(decreaseQuanCreateOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(increaseQuanCreateOrderButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(removeButtonCreateOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(clearButton, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-                            .addComponent(discountCOComboBox)))
+                            .addComponent(clearButtonCreateOrder, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                            .addComponent(discountCreateOrderComboBox)))
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -769,7 +768,7 @@ public class AdminMain extends javax.swing.JFrame {
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addGroup(createOrderPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(confirmOrderButtonCO, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
+                            .addComponent(confirmOrderCreateOrderButton, javax.swing.GroupLayout.DEFAULT_SIZE, 52, Short.MAX_VALUE)
                             .addComponent(paymentCOTextField)))
                     .addGroup(createOrderPanelLayout.createSequentialGroup()
                         .addGap(34, 34, 34)
@@ -856,8 +855,7 @@ public class AdminMain extends javax.swing.JFrame {
                     itemId,
                     name,
                     price,
-                    imagePath,
-                    co
+                    imagePath
                 );
                 mainCreateOrderPanel.add(card);
             }
@@ -885,8 +883,7 @@ public class AdminMain extends javax.swing.JFrame {
                     drinkId,
                     rs.getString("drinkName"),
                     rs.getDouble("price"),
-                    rs.getString("image_path"),
-                    co
+                    rs.getString("image_path")
                 );
                 mainCreateOrderPanel.add(card);
             }
@@ -914,8 +911,7 @@ public class AdminMain extends javax.swing.JFrame {
                     addonId,
                     rs.getString("addonName"),
                     rs.getDouble("price"),
-                    rs.getString("imagePath"),
-                    co
+                    rs.getString("imagePath")
                 );
                 mainCreateOrderPanel.add(card);
             }
@@ -1058,14 +1054,14 @@ public class AdminMain extends javax.swing.JFrame {
         loadMenuItems("Chicken");
     }//GEN-LAST:event_createCButtonActionPerformed
 
-    private void increaseQuanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseQuanButtonActionPerformed
+    private void increaseQuanCreateOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_increaseQuanCreateOrderButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_increaseQuanButtonActionPerformed
+    }//GEN-LAST:event_increaseQuanCreateOrderButtonActionPerformed
 
-    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+    private void removeButtonCreateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonCreateOrderActionPerformed
         // TODO add your handling code here:
-        co.removeCartItem();
-    }//GEN-LAST:event_removeButtonActionPerformed
+
+    }//GEN-LAST:event_removeButtonCreateOrderActionPerformed
 
     private void addOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addOrderButtonActionPerformed
         // TODO add your handling code here:
@@ -1125,24 +1121,21 @@ public class AdminMain extends javax.swing.JFrame {
         loadAddOns();
     }//GEN-LAST:event_creatAOButtonActionPerformed
 
-    private void decreaseQuanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decreaseQuanButtonActionPerformed
+    private void decreaseQuanCreateOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decreaseQuanCreateOrderButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_decreaseQuanButtonActionPerformed
+    }//GEN-LAST:event_decreaseQuanCreateOrderButtonActionPerformed
 
-    private void clearButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonActionPerformed
+    private void clearButtonCreateOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearButtonCreateOrderActionPerformed
         // TODO add your handling code here:
-        co.clearCart();
-    }//GEN-LAST:event_clearButtonActionPerformed
+    }//GEN-LAST:event_clearButtonCreateOrderActionPerformed
 
-    private void discountCOComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountCOComboBoxActionPerformed
+    private void discountCreateOrderComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_discountCreateOrderComboBoxActionPerformed
         // TODO add your handling code here:
-        co.getDiscountRate();
-    }//GEN-LAST:event_discountCOComboBoxActionPerformed
+    }//GEN-LAST:event_discountCreateOrderComboBoxActionPerformed
 
-    private void confirmOrderButtonCOActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmOrderButtonCOActionPerformed
+    private void confirmOrderCreateOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmOrderCreateOrderButtonActionPerformed
         // TODO add your handling code here:
-        co.confirmOrder();
-    }//GEN-LAST:event_confirmOrderButtonCOActionPerformed
+    }//GEN-LAST:event_confirmOrderCreateOrderButtonActionPerformed
 
 
 
@@ -1175,8 +1168,8 @@ public class AdminMain extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton addOrderButton;
     public javax.swing.JButton calculateButton;
-    public javax.swing.JButton clearButton;
-    public javax.swing.JButton confirmOrderButtonCO;
+    public javax.swing.JButton clearButtonCreateOrder;
+    public javax.swing.JButton confirmOrderCreateOrderButton;
     public javax.swing.JButton creatAOButton;
     public javax.swing.JButton creatBButton;
     public javax.swing.JButton createCButton;
@@ -1186,14 +1179,14 @@ public class AdminMain extends javax.swing.JFrame {
     public javax.swing.JPanel createOrderPanel;
     public javax.swing.JButton createPButton;
     public javax.swing.JButton createWNButton;
-    public javax.swing.JButton decreaseQuanButton;
+    public javax.swing.JButton decreaseQuanCreateOrderButton;
     public javax.swing.JButton deleteButtonOrder;
-    public javax.swing.JComboBox<String> discountCOComboBox;
     public javax.swing.JComboBox<String> discountComboBox;
+    public javax.swing.JComboBox<String> discountCreateOrderComboBox;
     public javax.swing.JButton editMenuButton;
     public javax.swing.JPanel editMenuPanel;
     public javax.swing.JButton editOrderButton;
-    public javax.swing.JButton increaseQuanButton;
+    public javax.swing.JButton increaseQuanCreateOrderButton;
     public javax.swing.JLabel jLabel1;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JLabel jLabel3;
@@ -1219,9 +1212,9 @@ public class AdminMain extends javax.swing.JFrame {
     public javax.swing.JPanel payOrderPanel;
     public javax.swing.JTextField paymentCOTextField;
     public javax.swing.JTextField paymentTextField;
-    public javax.swing.JButton removeButton;
+    public javax.swing.JButton removeButtonCreateOrder;
     public javax.swing.JPanel sidePanel;
-    public javax.swing.JTable tableCO;
+    public javax.swing.JTable tableCreateOrder;
     public javax.swing.JLabel totalAmountLabel;
     public javax.swing.JLabel totalPriceLabel;
     // End of variables declaration//GEN-END:variables

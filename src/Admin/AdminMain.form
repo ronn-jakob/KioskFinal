@@ -790,22 +790,22 @@
                                   <Group type="102" alignment="1" attributes="0">
                                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="decreaseQuanButton" min="-2" pref="107" max="-2" attributes="0"/>
+                                              <Component id="decreaseQuanCreateOrderButton" min="-2" pref="107" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="increaseQuanButton" min="-2" pref="109" max="-2" attributes="0"/>
+                                              <Component id="increaseQuanCreateOrderButton" min="-2" pref="109" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="removeButton" min="-2" pref="109" max="-2" attributes="0"/>
+                                              <Component id="removeButtonCreateOrder" min="-2" pref="109" max="-2" attributes="0"/>
                                           </Group>
                                           <Group type="102" alignment="0" attributes="0">
-                                              <Component id="clearButton" min="-2" pref="163" max="-2" attributes="0"/>
+                                              <Component id="clearButtonCreateOrder" min="-2" pref="163" max="-2" attributes="0"/>
                                               <EmptySpace max="-2" attributes="0"/>
-                                              <Component id="discountCOComboBox" max="32767" attributes="0"/>
+                                              <Component id="discountCreateOrderComboBox" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                       <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
-                              <Component id="confirmOrderButtonCO" min="-2" pref="337" max="-2" attributes="0"/>
+                              <Component id="confirmOrderCreateOrderButton" min="-2" pref="337" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace pref="123" max="32767" attributes="0"/>
                       </Group>
@@ -825,14 +825,14 @@
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="decreaseQuanButton" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
-                                      <Component id="increaseQuanButton" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
-                                      <Component id="removeButton" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                                      <Component id="decreaseQuanCreateOrderButton" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                                      <Component id="increaseQuanCreateOrderButton" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                                      <Component id="removeButtonCreateOrder" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="clearButton" pref="45" max="32767" attributes="0"/>
-                                      <Component id="discountCOComboBox" max="32767" attributes="0"/>
+                                      <Component id="clearButtonCreateOrder" pref="45" max="32767" attributes="0"/>
+                                      <Component id="discountCreateOrderComboBox" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                               <Group type="102" attributes="0">
@@ -845,7 +845,7 @@
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="confirmOrderButtonCO" pref="52" max="32767" attributes="0"/>
+                                      <Component id="confirmOrderCreateOrderButton" pref="52" max="32767" attributes="0"/>
                                       <Component id="paymentCOTextField" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
@@ -1082,7 +1082,7 @@
 
                   <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                   <SubComponents>
-                    <Component class="javax.swing.JTable" name="tableCO">
+                    <Component class="javax.swing.JTable" name="tableCreateOrder">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="4" rowCount="4">
@@ -1123,7 +1123,7 @@
                     </Component>
                   </SubComponents>
                 </Container>
-                <Component class="javax.swing.JButton" name="decreaseQuanButton">
+                <Component class="javax.swing.JButton" name="decreaseQuanCreateOrderButton">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="14" style="1"/>
@@ -1145,10 +1145,10 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="decreaseQuanButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="decreaseQuanCreateOrderButtonActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="increaseQuanButton">
+                <Component class="javax.swing.JButton" name="increaseQuanCreateOrderButton">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="14" style="1"/>
@@ -1170,10 +1170,10 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="increaseQuanButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="increaseQuanCreateOrderButtonActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="removeButton">
+                <Component class="javax.swing.JButton" name="removeButtonCreateOrder">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="14" style="1"/>
@@ -1195,10 +1195,10 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeButtonCreateOrderActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="clearButton">
+                <Component class="javax.swing.JButton" name="clearButtonCreateOrder">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="14" style="1"/>
@@ -1220,10 +1220,10 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearButtonActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="clearButtonCreateOrderActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="confirmOrderButtonCO">
+                <Component class="javax.swing.JButton" name="confirmOrderCreateOrderButton">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="14" style="1"/>
@@ -1245,7 +1245,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmOrderButtonCOActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="confirmOrderCreateOrderButtonActionPerformed"/>
                   </Events>
                 </Component>
                 <Component class="javax.swing.JLabel" name="jLabel2">
@@ -1270,7 +1270,7 @@
                     <Property name="text" type="java.lang.String" value=" "/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JComboBox" name="discountCOComboBox">
+                <Component class="javax.swing.JComboBox" name="discountCreateOrderComboBox">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="14" style="1"/>
@@ -1294,7 +1294,7 @@
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="discountCOComboBoxActionPerformed"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="discountCreateOrderComboBoxActionPerformed"/>
                   </Events>
                   <AuxValues>
                     <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>

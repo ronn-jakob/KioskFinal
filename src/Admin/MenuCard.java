@@ -10,12 +10,11 @@ import javax.swing.*;
 
 public class MenuCard extends JPanel {
     
-    CreateOrder co;
+
     int itemId;
 
-    public MenuCard(int itemId,String name, double price, String imagePath, CreateOrder co) {
-        
-        this.co = co;
+    public MenuCard(int itemId,String name, double price, String imagePath){ 
+
         this.itemId = itemId;
 
         setPreferredSize(new Dimension(150, 180));
@@ -40,7 +39,7 @@ public class MenuCard extends JPanel {
         // Button
         JButton addButton = new JButton("Add");
         addButton.addActionListener(e -> {
-            co.addToCart(itemId,name, price);
+            
         });
 
         // Bottom panel
